@@ -5,21 +5,45 @@ taught at Polimi, Fall 2026.
 
 ## Structure
 
-Each lab lives in its own folder:
+Each lab lives in its own folder (tree generally not updated, take this just a general example of the code structure):
 
 ```
 SwE2026/
-├── lab1/
-├── lab2/
-│   ├── src/lab2/School/...   # Java sources / csv files for data storing
-│   ├── bin/                  # compiled classes (not tracked)
-│   └──
-└── ...
+    src
+    ├── lab1
+    │   ├── Fraction
+    │   │   ├── Fraction.java
+    │   │   └── Main.java
+    │   ├── Poly
+    │   │   ├── Main.java
+    │   │   ├── Point.java
+    │   │   └── Polygon.java
+    │   └── specs
+    │       └── SwE2026_Ex1.pdf
+    └── lab2
+        ├── README.md
+        ├── School
+        │   ├── Contents
+        │   │   ├── Course.java
+        │   │   ├── Exam.java
+        │   │   ├── Grade.java
+        │   │   ├── Semester.java
+        │   │   └── SemesterType.java
+        │   ├── Handlers
+        │   │   └── InvalidPathException.java
+        │   ├── Main.java
+        │   └── Users
+        │       ├── Data
+        │       │   └── students.csv
+        │       ├── Person.java
+        │       ├── Professor.java
+        │       ├── Student.java
+        │       └── StudentsAdmin.java
+        └── specs
+            ├── SwE2025_Ex2.pdf
+            └── SwE2026_Ex3.pdf
 ```
-
 ## Build and run
-
-Requires a JDK (17 or newer). From inside a lab folder, e.g. `lab2/`:
 
 ```bash
 javac -g -d bin src/lab2/School/*.java
