@@ -62,4 +62,9 @@ public class Student extends Person {
     this.courses.add(c);
   }
 
+  @Override
+  public String toString() {
+    return ("[" + this.getId() + "] : " + this.getName() + ", " + this.getSurname() + ", "
+        + this.getBirth_date().toString());
+  }
 }

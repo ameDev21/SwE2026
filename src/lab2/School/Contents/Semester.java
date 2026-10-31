@@ -6,24 +6,22 @@ import java.util.ArrayList;
 /**
  * Semester (abstract)
  */
-public abstract class Semester {
-  private SemesterType semester_type;
+public class Semester {
+  private SemesterType semesterType;
   private Year year;
   private ArrayList<Course> courses = new ArrayList<Course>();
 
-  Semester(SemesterType semester_type, Year year, ArrayList<Course> courses) {
-    this.semester_type = semester_type;
-    this.courses = courses;
+  Semester(SemesterType semesterType, Year year) {
+    this.semesterType = semesterType;
     this.year = year;
-    this.courses = courses;
   }
 
   public SemesterType getSemesterType() {
-    return semester_type;
+    return semesterType;
   }
 
-  public void setSemesterType(SemesterType semester_type) {
-    this.semester_type = semester_type;
+  public void setSemesterType(SemesterType semesterType) {
+    this.semesterType = semesterType;
   }
 
   public Year getYear() {
@@ -38,5 +36,17 @@ public abstract class Semester {
     if (!this.courses.contains(course)) {
       this.courses.add(course);
     }
+  }
+
+  @Override
+  public String toString() {
+    String s = this.getSemesterType().toString() + " " + this.getYear().toString() + ": [";
+
+    for (Course course : this.getCourses()) {
+      s += course.toString() + ", ";
+    }
+    s = s.substring(0, s.length() - 2);
+    s += "]";
+    return s;
   }
 }

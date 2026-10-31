@@ -8,6 +8,8 @@ package School.Users;
 import java.util.ArrayList;
 import java.util.Date;
 
+import School.Contents.Course;
+
 /**
  * Professor
  */

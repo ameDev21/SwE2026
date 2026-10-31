@@ -9,7 +9,7 @@ import java.time.Year;
 import java.util.ArrayList;
 
 import School.Handlers.InvalidPathException;
-import School.Contents.Semester;
+import School.Handlers.InvalidSemesterException;
 
 /**
  * SemesterAdmin
@@ -21,7 +21,7 @@ public class SemestersAdmin {
   private SemestersAdmin() {
   }
 
-  public SemestersAdmin getInstance() {
+  public static SemestersAdmin getInstance() {
     if (instance == null) {
       instance = new SemestersAdmin();
       return instance;
@@ -32,9 +32,9 @@ public class SemestersAdmin {
 
   public void addSemester(Semester s) {
     if (instance == null) {
-      getInstance().addSemester(s);
+      getInstance().semesters.add(s);
     } else {
-      instance.addSemester(s);
+      instance.semesters.add(s);
     }
   }
 
@@ -43,9 +43,9 @@ public class SemestersAdmin {
   }
 
   public int semesterIndex(Year y, SemesterType st) {
-    for (int i = 0; i < this.getInstance().semesters.size(); i++) {
-      if (instance.getSemesters().get(i).getYear().equals(y)
-          && instance.getSemesters().get(i).getSemesterType().equals(st)) {
+    for (int i = 0; i < SemestersAdmin.getInstance().semesters.size(); i++) {
+      if (SemestersAdmin.getInstance().getSemesters().get(i).getYear().equals(y)
+          && SemestersAdmin.getInstance().getSemesters().get(i).getSemesterType().equals(st)) {
         return i;
       }
     }
@@ -53,39 +53,49 @@ public class SemestersAdmin {
   }
 
   public void readSemesters(String pathname) throws IOException {
+    int counter_lines = 0;
+    SemesterType st;
     File file = new File(pathname);
     if (!file.canRead()) {
-      throw new InvalidPathException("invalid file path");
+      throw new InvalidPathException("invalid file path for classes registering");
     }
 
     BufferedReader reader = new BufferedReader(new FileReader(pathname));
     String line = "";
     // marking the start of the file
     while ((line = reader.readLine()) != null) {
+      counter_lines++;
       // reading the line single element (CSV style)
       // the CSV the courses/semesters are:
-      // course_id, year, semesterType, professor
+      // course_id [0], year [1], semesterType[2], credits [3]
       String[] row = line.split(",");
-      // TODO: check here if the professor exists, otherwise display an error message
-      int i; 
-      // TODO: fix this adding the costructor for semestertype taking a string 
-      // and for the year search a way around to convert the string to a number (int)
-      /* 
-      if ((i = semesterIndex(new Year(row[1]), new SemesterType(row[2]))) != -1) {
-        // semester already existing 
+      int i;
+      if (row[2].equals("FALL")) {
+        st = SemesterType.FALL;
+      } else if (row[2].equals("SPRING")) {
+        st = SemesterType.SPRING;
       } else {
-        instance.addSemester(new Semester(new SemesterType(row[2]), new Year(row[1]), new ArrayList<Course>()));
+        reader.close();
+        throw new InvalidSemesterException("The semester inserted at line " + counter_lines + " is not valid");
       }
-      */ 
-      /* ASSUMING HERE THAT THE PROFESSOR EXISTS */
-
+      if ((i = semesterIndex(Year.of(Integer.parseInt(row[1])), st)) != -1) {
+        // semester already existing
+        SemestersAdmin.getInstance().getSemesters().get(i).addCourse(
+            new Course(Integer.parseInt(row[0]), Integer.parseInt(row[3]), st, Year.of(Integer.parseInt(row[1]))));
+      } else {
+        SemestersAdmin.getInstance().addSemester(new Semester(st, Year.of(Integer.parseInt(row[1]))));
+        SemestersAdmin.getInstance().getSemesters().get(SemestersAdmin.getInstance().getSemesters().size() - 1)
+            .addCourse(
+                new Course(Integer.parseInt(row[0]), Integer.parseInt(row[3]), st, Year.of(Integer.parseInt(row[1]))));
       }
-      // this.getInstance().cour(new Student(row[0], row[1], new Date(row[2])));
-
     }
-  // closing the input stream to the file
-  reader.close();
+    // closing input stream on the file
+    reader.close();
+  }
 
-  // debugging call
-  // printStudents();
-}}
+  public void printSemesters() {
+    for (Semester semester : SemestersAdmin.getInstance().getSemesters()) {
+      System.out.println(semester.toString());
+    }
+  }
+}

@@ -25,6 +25,13 @@ public class Course {
     this.semesterType = semesterType;
   }
 
+  Course(int course_id, int credits, SemesterType semesterType, Year year) {
+    this.course_id = course_id;
+    this.credits = credits;
+    this.semesterType = semesterType;
+    this.year = year;
+  }
+
   public void setCredits(int credits) {
     this.credits = credits;
   }
@@ -71,5 +78,10 @@ public class Course {
 
   public SemesterType getSemesterType() {
     return semesterType;
+  }
+
+  @Override
+  public String toString() {
+    return ("course_id: " + Integer.toString(this.getCourse_id()) + " cfu: " + Integer.toString(this.getCredits()));
   }
 }

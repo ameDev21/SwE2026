@@ -1,4 +1,4 @@
-// THIS SHOULD BE A SINGLETON
+// THIS CLASS SHOULD BE A SINGLETON
 package School.Users;
 
 import java.io.BufferedReader;
@@ -16,9 +16,22 @@ import School.Handlers.*;
  * StudentsAdmin with aggregation to student
  */
 public class StudentsAdmin {
+  private static StudentsAdmin instance;
   private ArrayList<Student> students = new ArrayList<>();
 
-  public StudentsAdmin(String pathname) throws IOException {
+  private StudentsAdmin() {
+  }
+
+  public static StudentsAdmin getInstance() {
+    if (instance == null) {
+      instance = new StudentsAdmin();
+      return instance;
+    } else {
+      return instance;
+    }
+  }
+
+  public void readStudents(String pathname) throws IOException {
     File file = new File(pathname);
     if (!file.canRead()) {
       throw new InvalidPathException("invalid file path");
@@ -30,7 +43,7 @@ public class StudentsAdmin {
     while ((line = reader.readLine()) != null) {
       // reading the line single element (CSV style)
       String[] row = line.split(",");
-      this.students.add(new Student(row[0], row[1], new Date(row[2])));
+      StudentsAdmin.getInstance().students.add(new Student(row[0], row[1], new Date(row[2])));
     }
     // closing the input stream to the file
     reader.close();
@@ -39,11 +52,14 @@ public class StudentsAdmin {
     // printStudents();
   }
 
+  public ArrayList<Student> getStudents() {
+    return students;
+  }
+
   // simple method that prints the managed students
   public void printStudents() {
-    for (int i = 0; i < this.students.size(); i++) {
-      System.out.printf("[%d] : %s, %s, %s \n", i, this.students.get(i).getName(), this.students.get(i).getSurname(),
-          this.students.get(i).getBirth_date().toString());
+    for (Student student : StudentsAdmin.getInstance().getStudents()) {
+      System.out.println(student.toString());
     }
   }
 }
