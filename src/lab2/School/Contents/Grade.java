@@ -27,5 +27,4 @@ public class Grade {
   public void setCredits(int credits) {
     this.credits = credits;
   }
-
 }

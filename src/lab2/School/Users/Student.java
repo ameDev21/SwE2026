@@ -3,6 +3,9 @@ package School.Users;
 import java.util.ArrayList;
 import java.util.Date;
 
+import School.Contents.Course;
+import School.Contents.Grade;
+
 /**
  * Student
  */
@@ -10,6 +13,7 @@ public class Student extends Person {
   private static int counter = 0;
   private int id;
   private ArrayList<Grade> grades = new ArrayList<Grade>();
+  private ArrayList<Course> courses = new ArrayList<Course>();
 
   public Student(String name, String surname, Date birth_date) {
     super(name, surname, birth_date);
@@ -53,4 +57,9 @@ public class Student extends Person {
     }
     return (sum >= 180) ? true : false;
   }
+
+  public void enroll(Course c) {
+    this.courses.add(c);
+  }
+
 }

@@ -1,3 +1,4 @@
+// THIS SHOULD BE A SINGLETON
 package School.Users;
 
 import java.io.BufferedReader;
